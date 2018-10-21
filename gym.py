@@ -77,14 +77,20 @@ class Gym():
                                          output["map_height"]][0] += 1
                     self.stats['Halite'][output["map_width"] * output[
                         "map_height"]][1] += output['stats']['0']['score']
+                win = 0
                 if output['stats']['0']['rank'] == 1:
-                    if (output["map_width"] *
-                            output["map_height"]) not in self.stats['Wins']:
-                        self.stats['Wins'][output["map_width"] *
-                                             output["map_height"]] = 1
-                    else:
-                        self.stats['Wins'][output["map_width"] *
-                                             output["map_height"]] += 1
+                    win = 1
+                if (output["map_width"] *
+                        output["map_height"]) not in self.stats['Wins']:
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]] = [
+                                         1, win
+                                     ]
+                else:
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]][0] += 1
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]][0] += win
                 print("finished game {}".format(i), end='\r')
             pool.close()
             pool.join()
@@ -107,23 +113,31 @@ class Gym():
                                          output["map_height"]][0] += 1
                     self.stats['Halite'][output["map_width"] * output[
                         "map_height"]][1] += output['stats']['0']['score']
+                win = 0
                 if output['stats']['0']['rank'] == 1:
-                    if (output["map_width"] *
-                            output["map_height"]) not in self.stats['Wins']:
-                        self.stats['Wins'][output["map_width"] *
-                                             output["map_height"]] = 1
-                    else:
-                        self.stats['Wins'][output["map_width"] *
-                                             output["map_height"]] += 1
+                    win = 1
+                if (output["map_width"] *
+                        output["map_height"]) not in self.stats['Wins']:
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]] = [
+                                         1, win
+                                     ]
+                else:
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]][0] += 1
+                    self.stats['Wins'][output["map_width"] *
+                                         output["map_height"]][0] += win
 
 
-
-        for key in self.stats['Wins']:
-            print("Win rate on {} size maps".format(key),
-                  self.stats['Wins'][key] / self.number_of_runs)
-        for key in self.stats['Halite']:
-            print("Halite per game on {} size maps".format(key),
-                  self.stats['Halite'][key][1] / self.stats['Halite'][key][0])
+        if not self.stats['Wins']:
+            print("Your bot won 0 games :(")
+        else:
+            for key in self.stats['Wins']:
+                print("Win rate on {} size maps".format(key),
+                      self.stats['Wins'][key][1] / self.stats['Wins'][key][0])
+            for key in self.stats['Halite']:
+                print("Halite per game on {} size maps".format(key),
+                      self.stats['Halite'][key][1] / self.stats['Halite'][key][0])
 
 
 if __name__ == '__main__':
